@@ -83,8 +83,10 @@ module Lastic
 
     # Ordering ---------------------------------------------------------
     # https://www.elastic.co/guide/en/elasticsearch/reference/current/search-request-sort.html
-    # sort(:me, you: :desc, Lastic.field(:price).desc.avg)
+    # sort(:me, Lastic.field(:price).desc.avg, you: :desc)
     def sort!(*fields)
+      fields += fields.pop.map { |k, v| { k => v.to_s } } if
+        fields.last.is_a?(Hash)
       @sort = fields.map(&SortableField.method(:coerce))
       self
     end

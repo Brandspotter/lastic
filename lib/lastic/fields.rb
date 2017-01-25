@@ -1,7 +1,7 @@
 module Lastic
   class Field
     attr_reader :name
-    
+
     def initialize(*names)
       @name = names.join('.')
     end
@@ -58,7 +58,7 @@ module Lastic
 
   class Fields
     attr_reader :fields
-    
+
     def initialize(*names)
       @fields = names.map(&Field.method(:new))
     end
@@ -76,7 +76,7 @@ module Lastic
     attr_reader :field, :options
 
     using StringifySymbolize
-    
+
     def initialize(field, **options)
       @field, @options = field, options
     end
@@ -95,6 +95,8 @@ module Lastic
         field
       when Field
         new(field)
+      when Hash
+        new(Field.new(field.first[0]), order: field.first[1])
       else
         new(Field.new(field))
       end

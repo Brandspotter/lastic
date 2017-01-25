@@ -106,11 +106,14 @@ module Lastic
       describe :sort! do
         it 'sets sort fields' do
           expect(request.sort).to be_nil
-          request.sort!(:title, Lastic.field(:body).desc)
+          request.sort!(:title, Lastic.field(:body).desc,
+                        date: :asc, name: :desc)
           expect(request.sort).
             to eq([
               SortableField.new(Field.new(:title)),
-              SortableField.new(Field.new(:body), order: 'desc')
+              SortableField.new(Field.new(:body), order: 'desc'),
+              SortableField.new(Field.new(:date), order: 'asc'),
+              SortableField.new(Field.new(:name), order: 'desc')
             ])
         end
       end
